@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -10,53 +12,66 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BoxPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class BoxPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Colors'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: Box(),
+    );
+  }
+}
+
+class Box extends StatefulWidget {
+  @override
+  _BoxState createState() => _BoxState();
+}
+
+var rnd = Random();
+
+Color getMeSomeColor() {
+  var colors = Colors.primaries;
+  return colors[rnd.nextInt(colors.length)];
+}
+
+class _BoxState extends State<Box> {
+  var _color = Colors.red;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _color = getMeSomeColor();
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: _color,
+              boxShadow: [
+                BoxShadow(
+                    color: _color.withAlpha(80),
+                    offset: Offset(0, 0),
+                    blurRadius: 15,
+                    spreadRadius: 8),
+              ]),
+          width: 300,
+          height: 300,
+          child: Center(
+              child: Text(
+            'tap me',
+            style: TextStyle(fontSize: 40, color: Colors.white),
+          )),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
