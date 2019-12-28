@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,15 +8,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TodoList',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xff3863DC),
+        fontFamily: 'Cera',
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('TodoList'),
-          elevation: 2,
-        ),
-        body: TodoForm(),
+        body: SafeArea(child: TodoForm()),
       ),
     );
   }
@@ -41,7 +40,7 @@ class Todo {
 class _TodoFormState extends State<TodoForm> {
   final inputCtrl = TextEditingController();
 
-  List<Todo> todos = [Todo(text: 'buy milk'), Todo(text: 'go run man')];
+  List<Todo> todos = [Todo(text: 'buy milk'), Todo(text: 'type your todo')];
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +48,30 @@ class _TodoFormState extends State<TodoForm> {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Column(
         children: <Widget>[
-          _buildInputRow(),
-          Expanded(
-            child: Container(
-              color: Colors.grey[200],
-              child: ListView.builder(
-                itemCount: todos.length,
-                itemBuilder: _todoItemBuilder,
+          Row(children: [
+            Container(
+              margin: EdgeInsets.only(top: 18, bottom: 18),
+              padding: EdgeInsets.only(left: 3),
+              child: Text(
+                'To-do list',
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 28,
+                ),
               ),
             ),
-          ),
+          ]),
+          Expanded(
+              child: todos.length != 0
+                  ? ListView.builder(
+                      itemCount: todos.length,
+                      itemBuilder: _todoItemBuilder,
+                    )
+                  : Center(
+                      child: Text('Add something!'),
+                    )),
+          _buildInputRow(),
         ],
       ),
     );
@@ -71,13 +84,16 @@ class _TodoFormState extends State<TodoForm> {
           child: TextField(
             controller: inputCtrl,
             decoration: InputDecoration(
-              hintText: 'e.g buy some coffee',
+              hintText: 'I want to ...',
               border: InputBorder.none,
             ),
           ),
         ),
-        RaisedButton(
-          child: Text('Add'),
+        FlatButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: Theme.of(context).primaryColor,
+          textColor: Colors.white,
+          child: Text('+ Add Task'),
           onPressed: () {
             if (inputCtrl.text.isNotEmpty)
               setState(() {
@@ -85,6 +101,9 @@ class _TodoFormState extends State<TodoForm> {
                 inputCtrl.text = '';
               });
           },
+        ),
+        SizedBox(
+          width: 3,
         )
       ],
     );
@@ -117,24 +136,36 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        todo.text,
-        style: TextStyle(
-            decoration: todo.completed
-                ? TextDecoration.lineThrough
-                : TextDecoration.none),
-      ),
-      subtitle: Text('${todo.time.hour}:${todo.time.minute}'),
-      leading: IconButton(
-        icon: todo.completed
-            ? Icon(Icons.check_box)
-            : Icon(Icons.check_box_outline_blank),
-        onPressed: togglePressed,
-      ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: removePressed,
+    final completedIconColor = Theme.of(context).primaryColor.withAlpha(100);
+    return Card(
+      child: ListTile(
+        title: Text(
+          todo.text,
+          style: TextStyle(
+              decoration: todo.completed
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none),
+        ),
+        subtitle: Text('${todo.time.hour}:${todo.time.minute}'),
+        leading: IconButton(
+          icon: todo.completed
+              ? Icon(
+                  FontAwesomeIcons.checkCircle,
+                  color: completedIconColor,
+                )
+              : Icon(
+                  FontAwesomeIcons.circle,
+                  color: completedIconColor,
+                ),
+          onPressed: togglePressed,
+        ),
+        trailing: IconButton(
+          icon: Icon(
+            Icons.more_horiz,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () {},
+        ),
       ),
     );
   }
