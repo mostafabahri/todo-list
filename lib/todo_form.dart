@@ -1,21 +1,26 @@
 import 'package:colors/choice.dart';
 import 'package:colors/todo.dart';
 import 'package:colors/todo_item.dart';
+import 'package:colors/todo_repository.dart';
 import 'package:flutter/material.dart';
 
 class TodoForm extends StatefulWidget {
-  @override
-  _TodoFormState createState() => _TodoFormState();
+  final List<Todo> todos;
+
+  TodoForm({@required this.todos});
+
+  _TodoFormState createState() => _TodoFormState(todos: todos);
 }
 
 class _TodoFormState extends State<TodoForm> {
   final inputCtrl = TextEditingController();
+  List<Todo> todos;
 
   ScrollController _scrollController = ScrollController();
 
-  List<Todo> todos = [Todo(text: 'buy milk'), Todo(text: 'type your todo')];
-
   final background = AssetImage('assets/images/pattern-hd.jpg');
+
+  _TodoFormState({this.todos});
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +89,11 @@ class _TodoFormState extends State<TodoForm> {
           onPressed: () {
             if (inputCtrl.text.isNotEmpty) {
               setState(() {
-                todos.add(Todo(text: inputCtrl.text));
+                todos.add(Todo(text: inputCtrl.text.trim()));
                 inputCtrl.text = '';
               });
+
+              TodoRepoFactory.getInstance().saveTodos(todos);
 
               _scrollToBottom();
             }
