@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'TodoList',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Color(0xff3863DC),
+          primaryColor: Colors.indigo,
           accentColor: Color(0xff668EE6),
           fontFamily: 'Cera',
           popupMenuTheme: PopupMenuThemeData(elevation: 2)),

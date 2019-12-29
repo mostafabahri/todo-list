@@ -15,51 +15,53 @@ class _TodoFormState extends State<TodoForm> {
 
   List<Todo> todos = [Todo(text: 'buy milk'), Todo(text: 'type your todo')];
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  final background = AssetImage('assets/images/pattern-hd.jpg');
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 18, bottom: 18, right: 5),
-            padding: EdgeInsets.symmetric(horizontal: 3),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'To-do list',
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28,
-                    ),
-                  ),
-                  CustomPopUp(
-                    handleOnSelect: _handleSelect,
-                  ),
-                ]),
-          ),
-          Expanded(
-              child: todos.length != 0
-                  ? ListView.builder(
-                      controller: _scrollController,
-                      padding: EdgeInsets.only(bottom: 5),
-                      itemCount: todos.length,
-                      itemBuilder: _todoItemBuilder,
-                    )
-                  : Center(
-                      child: Text('Add something!'),
-                    )),
-          _buildInputRow(),
-        ],
-      ),
+    var imageDecoration = BoxDecoration(
+      image: DecorationImage(image: background, fit: BoxFit.cover),
     );
+    return Container(
+        decoration: imageDecoration,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 18, bottom: 18, right: 5),
+                padding: EdgeInsets.symmetric(horizontal: 3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'To-do list',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 28,
+                        ),
+                      ),
+                      CustomPopUp(
+                        handleOnSelect: _handleSelect,
+                      ),
+                    ]),
+              ),
+              Expanded(
+                  child: todos.length != 0
+                      ? ListView.builder(
+                          controller: _scrollController,
+                          padding: EdgeInsets.only(bottom: 5),
+                          itemCount: todos.length,
+                          itemBuilder: _todoItemBuilder,
+                        )
+                      : Center(
+                          child: Text('Add something!'),
+                        )),
+              _buildInputRow(),
+            ],
+          ),
+        ));
   }
 
   Row _buildInputRow() {
@@ -76,17 +78,18 @@ class _TodoFormState extends State<TodoForm> {
         ),
         FlatButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: Theme.of(context).primaryColor,
+          color: Color(0xff2c2f36),
           textColor: Colors.white,
           child: Text('+ Add Task'),
           onPressed: () {
-            if (inputCtrl.text.isNotEmpty)
+            if (inputCtrl.text.isNotEmpty) {
               setState(() {
                 todos.add(Todo(text: inputCtrl.text));
                 inputCtrl.text = '';
               });
 
-            _scrollToBottom();
+              _scrollToBottom();
+            }
           },
         ),
         SizedBox(

@@ -11,7 +11,7 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notCompletedIconColor = Theme.of(context).accentColor;
+    final notCompletedIconColor = Color(0xff4ed9d6);
 
     final completedIconColor = notCompletedIconColor.withAlpha(100);
 
@@ -36,6 +36,7 @@ class TodoItem extends StatelessWidget {
       onDismissed: (DismissDirection direction) => removePressed(),
       child: Card(
         elevation: 0,
+        color: Color(0xfffff5fb),
         child: ListTile(
           title: Text(
             todo.text,
