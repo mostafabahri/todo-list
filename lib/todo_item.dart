@@ -11,23 +11,29 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final completedIconColor = Theme.of(context).primaryColor.withAlpha(100);
-    return Dismissible(
-      key: ValueKey<String>(todo.text),
-      background: Container(
+    final notCompletedIconColor = Theme.of(context).accentColor;
+
+    final completedIconColor = notCompletedIconColor.withAlpha(100);
+
+    Widget getDissmissBackground(bool left) {
+      return Container(
         margin: EdgeInsets.all(4),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4), color: Colors.red[400]),
-        alignment: Alignment(0.9, 0),
+        alignment: Alignment(left ? -0.9 : 0.9, 0),
         child: Icon(
           FontAwesomeIcons.trash,
           color: Colors.white,
           size: 20,
         ),
-      ),
-      onDismissed: (DismissDirection direction) {
-        removePressed();
-      },
+      );
+    }
+
+    return Dismissible(
+      key: ValueKey<String>(todo.text),
+      background: getDissmissBackground(true),
+      secondaryBackground: getDissmissBackground(false),
+      onDismissed: (DismissDirection direction) => removePressed(),
       child: Card(
         elevation: 0,
         child: ListTile(
@@ -36,7 +42,8 @@ class TodoItem extends StatelessWidget {
             style: TextStyle(
                 decoration: todo.completed
                     ? TextDecoration.lineThrough
-                    : TextDecoration.none),
+                    : TextDecoration.none,
+                color: todo.completed ? Colors.grey : Colors.black),
           ),
           subtitle: Text('${todo.time.hour}:${todo.time.minute}'),
           leading: IconButton(
@@ -47,7 +54,7 @@ class TodoItem extends StatelessWidget {
                   )
                 : Icon(
                     FontAwesomeIcons.circle,
-                    color: completedIconColor,
+                    color: notCompletedIconColor,
                   ),
             onPressed: togglePressed,
           ),

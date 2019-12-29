@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Color(0xff3863DC),
+          accentColor: Color(0xff668EE6),
           fontFamily: 'Cera',
           popupMenuTheme: PopupMenuThemeData(elevation: 2)),
       home: Scaffold(

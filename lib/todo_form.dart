@@ -11,7 +11,14 @@ class TodoForm extends StatefulWidget {
 class _TodoFormState extends State<TodoForm> {
   final inputCtrl = TextEditingController();
 
+  ScrollController _scrollController = ScrollController();
+
   List<Todo> todos = [Todo(text: 'buy milk'), Todo(text: 'type your todo')];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +48,7 @@ class _TodoFormState extends State<TodoForm> {
           Expanded(
               child: todos.length != 0
                   ? ListView.builder(
+                      controller: _scrollController,
                       padding: EdgeInsets.only(bottom: 5),
                       itemCount: todos.length,
                       itemBuilder: _todoItemBuilder,
@@ -77,6 +85,8 @@ class _TodoFormState extends State<TodoForm> {
                 todos.add(Todo(text: inputCtrl.text));
                 inputCtrl.text = '';
               });
+
+            _scrollToBottom();
           },
         ),
         SizedBox(
@@ -113,9 +123,22 @@ class _TodoFormState extends State<TodoForm> {
         }
     }
   }
+
+  void _scrollToBottom() {
+    if (_scrollController.positions.toList().isNotEmpty) {
+      _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 80,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.ease);
+    }
+  }
 }
 
 class CustomPopUp extends StatelessWidget {
+  final List<Choice> choices = const <Choice>[
+    Choice(title: 'Delete all', action: ChoiceAction.Delete),
+  ];
+
   final Function handleOnSelect;
 
   const CustomPopUp({Key key, @required this.handleOnSelect}) : super(key: key);
@@ -123,7 +146,7 @@ class CustomPopUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Choice>(
-      child: Icon(Icons.more_vert),
+      child: Icon(Icons.more_horiz),
       onSelected: handleOnSelect,
       itemBuilder: (BuildContext context) {
         return choices.map((Choice choice) {
@@ -136,7 +159,3 @@ class CustomPopUp extends StatelessWidget {
     );
   }
 }
-
-List<Choice> choices = const <Choice>[
-  Choice(title: 'Delete all', action: ChoiceAction.Delete),
-];
