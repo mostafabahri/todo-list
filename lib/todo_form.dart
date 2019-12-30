@@ -60,7 +60,6 @@ class _TodoFormState extends State<TodoForm> {
                   child: todos.length != 0
                       ? ListView.builder(
                           controller: _scrollController,
-                          padding: EdgeInsets.only(bottom: 5),
                           itemCount: todos.length,
                           itemBuilder: _todoItemBuilder,
                         )
@@ -73,39 +72,41 @@ class _TodoFormState extends State<TodoForm> {
         ));
   }
 
-  Row _buildInputRow() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: TextField(
-            controller: inputCtrl,
-            decoration: InputDecoration(
-              hintText: 'I want to ...',
-              border: InputBorder.none,
+  Widget _buildInputRow() {
+    return Container(
+      margin: EdgeInsets.only(top: 7),
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: inputCtrl,
+              decoration: InputDecoration(
+                hintText: 'I want to ...',
+                border: InputBorder.none,
+              ),
             ),
           ),
-        ),
-        FlatButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: Color(0xff2c2f36),
-          textColor: Colors.white,
-          child: Text('+ Add Task'),
-          onPressed: () {
-            if (inputCtrl.text.isNotEmpty) {
-              setState(() {
-                todos.add(Todo(text: inputCtrl.text.trim()));
-                inputCtrl.text = '';
-              });
+          FlatButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            color: Color(0xff2c2f36),
+            textColor: Colors.white,
+            child: Text('+ Add Task'),
+            onPressed: () {
+              if (inputCtrl.text.isNotEmpty) {
+                setState(() {
+                  todos.add(Todo(text: inputCtrl.text.trim()));
+                  inputCtrl.text = '';
+                });
 
-              persist();
-              _scrollToBottom();
-            }
-          },
-        ),
-        SizedBox(
-          width: 3,
-        )
-      ],
+                persist();
+                _scrollToBottom();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
