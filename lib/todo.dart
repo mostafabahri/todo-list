@@ -28,4 +28,13 @@ class Todo {
   void toggleCompleted() {
     completed = !completed;
   }
+
+  bool operator ==(o) =>
+      o is Todo &&
+      o.text == this.text &&
+      o.completed == this.completed &&
+      o.time == this.time;
+
+  @override
+  int get hashCode => text.hashCode ^ time.hashCode ^ time.toString().hashCode;
 }
