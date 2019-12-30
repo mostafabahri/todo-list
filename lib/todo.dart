@@ -8,12 +8,11 @@ class Todo {
   Todo({@required this.text, DateTime time, this.completed = false})
       : time = time ?? DateTime.now();
 
-  Todo.fromJson(Map<String, dynamic> json)
-      : this(
-          text: json['text'],
-          completed: json['completed'],
-          time: DateTime.parse(json['time']),
-        );
+  factory Todo.fromJson(Map<String, dynamic> json) => Todo(
+        text: json['text'],
+        completed: json['completed'],
+        time: DateTime.parse(json['time']),
+      );
 
   Map<String, dynamic> toJson() => {
         'text': text,
