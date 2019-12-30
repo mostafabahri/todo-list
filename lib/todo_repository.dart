@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:colors/todo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoRepoFactory {
-  static TodoRepository getInstance() => MemoryTodoRepo();
+  static TodoRepository getInstance() => PrefsTodoRepo();
 }
 
 abstract class TodoRepository {
@@ -12,19 +13,20 @@ abstract class TodoRepository {
 }
 
 class PrefsTodoRepo implements TodoRepository {
-  @override
-  Future<List<Todo>> fetchTodos() {
-    var source = '''
-    [{"text": "save json", "completed": true, "time": "2019-12-30 00:42:13.273346"},
-    {"text": "get it going", "completed": false, "time": "2019-12-30 00:42:13.273347"},
-    {"text": "third todo", "completed": false, "time": "2019-12-30 00:41:13"}]''';
+  final kKey = 'flutter_todos';
 
-    var todos = TodosJsonDecoder().decode(source);
-    return Future.delayed(Duration(milliseconds: 600), () => todos);
+  @override
+  Future<List<Todo>> fetchTodos() async {
+    var prefs = await SharedPreferences.getInstance();
+    return TodosJsonDecoder().decode(prefs.getString(kKey));
   }
 
-  saveTodos(List<Todo> todos) {
-    // var jsonList = jsonEncode(todos);
+  @override
+  saveTodos(List<Todo> todos) async {
+    var prefs = await SharedPreferences.getInstance();
+
+    var jsonString = jsonEncode(todos);
+    print(await prefs.setString(kKey, jsonString));
   }
 }
 
