@@ -15,15 +15,19 @@ class TodoForm extends StatefulWidget {
 class _TodoFormState extends State<TodoForm> {
   final inputCtrl = TextEditingController();
   List<Todo> todos;
+  final TodoRepository repository;
 
   ScrollController _scrollController = ScrollController();
 
-  final background = AssetImage('assets/images/pattern-hd.jpg');
+  _TodoFormState({this.todos}) : repository = TodoRepoFactory.getInstance();
 
-  _TodoFormState({this.todos});
+  persist() {
+    repository.saveTodos(todos);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final background = AssetImage('assets/images/pattern-hd.jpg');
     var imageDecoration = BoxDecoration(
       image: DecorationImage(image: background, fit: BoxFit.cover),
     );
@@ -93,8 +97,7 @@ class _TodoFormState extends State<TodoForm> {
                 inputCtrl.text = '';
               });
 
-              TodoRepoFactory.getInstance().saveTodos(todos);
-
+              persist();
               _scrollToBottom();
             }
           },
@@ -114,11 +117,13 @@ class _TodoFormState extends State<TodoForm> {
         setState(() {
           todo.toggleCompleted();
         });
+        persist();
       },
       removePressed: () {
         setState(() {
           todos.removeAt(index);
         });
+        persist();
       },
     );
   }
@@ -128,8 +133,9 @@ class _TodoFormState extends State<TodoForm> {
       case ChoiceAction.Delete:
         {
           setState(() {
-            this.todos = [];
+            todos.clear();
           });
+          persist();
         }
     }
   }
