@@ -1,29 +1,19 @@
 import 'package:colors/choice.dart';
 import 'package:colors/todo.dart';
 import 'package:colors/todo_item.dart';
-import 'package:colors/todo_repository.dart';
+import 'package:colors/todos_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TodoForm extends StatefulWidget {
-  final List<Todo> todos;
+  TodoForm();
 
-  TodoForm({@required this.todos});
-
-  _TodoFormState createState() => _TodoFormState(todos: todos);
+  _TodoFormState createState() => _TodoFormState();
 }
 
 class _TodoFormState extends State<TodoForm> {
   final inputCtrl = TextEditingController();
-  List<Todo> todos;
-  final TodoRepository repository;
-
   ScrollController _scrollController = ScrollController();
-
-  _TodoFormState({this.todos}) : repository = TodoRepoFactory.getInstance();
-
-  persist() {
-    repository.saveTodos(todos);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +46,18 @@ class _TodoFormState extends State<TodoForm> {
                       ),
                     ]),
               ),
-              Expanded(
-                  child: todos.length != 0
-                      ? ListView.builder(
-                          controller: _scrollController,
-                          itemCount: todos.length,
-                          itemBuilder: _todoItemBuilder,
-                        )
-                      : Center(
-                          child: Text('Add something!'),
-                        )),
+              Consumer<TodosModel>(
+                builder: (context, model, _) => Expanded(
+                    child: model.todos.length != 0
+                        ? ListView.builder(
+                            controller: _scrollController,
+                            itemCount: model.todos.length,
+                            itemBuilder: _todoItemBuilder,
+                          )
+                        : Center(
+                            child: Text('Add something!'),
+                          )),
+              ),
               _buildInputRow(),
             ],
           ),
@@ -95,12 +87,13 @@ class _TodoFormState extends State<TodoForm> {
             child: Text('+ Add Task'),
             onPressed: () {
               if (inputCtrl.text.isNotEmpty) {
+                var todo = Todo(text: inputCtrl.text.trim());
+                Provider.of<TodosModel>(context, listen: false).addTodo(todo);
+
                 setState(() {
-                  todos.add(Todo(text: inputCtrl.text.trim()));
                   inputCtrl.text = '';
                 });
 
-                persist();
                 _scrollToBottom();
               }
             },
@@ -111,33 +104,17 @@ class _TodoFormState extends State<TodoForm> {
   }
 
   Widget _todoItemBuilder(BuildContext context, int index) {
-    final todo = todos[index];
+    final todo = Provider.of<TodosModel>(context, listen: false).todos[index];
     return TodoItem(
       todo: todo,
-      togglePressed: () {
-        setState(() {
-          todo.toggleCompleted();
-        });
-        persist();
-      },
-      removePressed: () {
-        setState(() {
-          todos.removeAt(index);
-        });
-        persist();
-      },
+      index: index,
     );
   }
 
   void _handleSelect(Choice choice) {
     switch (choice.action) {
       case ChoiceAction.Delete:
-        {
-          setState(() {
-            todos.clear();
-          });
-          persist();
-        }
+        Provider.of<TodosModel>(context, listen: false).clearAll();
     }
   }
 

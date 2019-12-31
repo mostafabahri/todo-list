@@ -4,7 +4,7 @@ import 'package:colors/todo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoRepoFactory {
-  static TodoRepository getInstance() => PrefsTodoRepo();
+  static TodoRepository getInstance() => MemoryTodoRepo();
 }
 
 abstract class TodoRepository {

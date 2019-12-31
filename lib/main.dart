@@ -1,6 +1,8 @@
 import 'package:colors/todo_form.dart';
 import 'package:colors/todo_repository.dart';
+import 'package:colors/todos_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,9 +33,15 @@ class MainScreen extends StatelessWidget {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-            ? TodoForm(todos: snapshot.data)
+            ? _buildTodosPage(snapshot)
             : Center(child: CircularProgressIndicator());
       },
     );
+  }
+
+  Widget _buildTodosPage(AsyncSnapshot snapshot) {
+    return ChangeNotifierProvider(
+        create: (context) => TodosModel(todos: snapshot.data),
+        child: TodoForm());
   }
 }

@@ -1,13 +1,14 @@
 import 'package:colors/todo.dart';
+import 'package:colors/todos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
-  final VoidCallback togglePressed;
-  final VoidCallback removePressed;
+  final int index;
 
-  TodoItem({this.todo, this.togglePressed, this.removePressed});
+  TodoItem({this.todo, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,8 @@ class TodoItem extends StatelessWidget {
       key: ValueKey<String>(todo.text),
       background: getDissmissBackground(true),
       secondaryBackground: getDissmissBackground(false),
-      onDismissed: (DismissDirection direction) => removePressed(),
+      onDismissed: (DismissDirection direction) =>
+          Provider.of<TodosModel>(context, listen: false).removeTodoAt(index),
       child: Card(
         elevation: 0,
         color: Color(0xfffff5fb),
@@ -57,15 +59,9 @@ class TodoItem extends StatelessWidget {
                     FontAwesomeIcons.circle,
                     color: notCompletedIconColor,
                   ),
-            onPressed: togglePressed,
+            onPressed: () => Provider.of<TodosModel>(context, listen: false)
+                .toggleCompletedAt(index),
           ),
-          // trailing: IconButton(
-          //   icon: Icon(
-          //     Icons.more_horiz,
-          //     color: Theme.of(context).primaryColor,
-          //   ),
-          //   onPressed: () {},
-          // ),
         ),
       ),
     );
