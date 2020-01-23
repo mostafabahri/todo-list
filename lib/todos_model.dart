@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:colors/todo.dart';
+import 'package:todo_list/todo.dart';
 import 'package:flutter/widgets.dart';
-import 'package:colors/todo_repository.dart';
+import 'package:todo_list/todo_repository.dart';
 
 class TodosModel extends ChangeNotifier {
   List<Todo> _todos;

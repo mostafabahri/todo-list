@@ -1,6 +1,6 @@
-import 'package:colors/todo_screen.dart';
-import 'package:colors/todo_repository.dart';
-import 'package:colors/todos_model.dart';
+import 'package:todo_list/todo_screen.dart';
+import 'package:todo_list/todo_repository.dart';
+import 'package:todo_list/todos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,4 +1,4 @@
-import 'package:colors/todos_model.dart';
+import 'package:todo_list/todos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

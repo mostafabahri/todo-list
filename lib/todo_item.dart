@@ -1,5 +1,5 @@
-import 'package:colors/todo.dart';
-import 'package:colors/todos_model.dart';
+import 'package:todo_list/todo.dart';
+import 'package:todo_list/todos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';

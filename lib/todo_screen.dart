@@ -1,7 +1,7 @@
-import 'package:colors/more_popup.dart';
-import 'package:colors/todo.dart';
-import 'package:colors/todo_item.dart';
-import 'package:colors/todos_model.dart';
+import 'package:todo_list/more_popup.dart';
+import 'package:todo_list/todo.dart';
+import 'package:todo_list/todo_item.dart';
+import 'package:todo_list/todos_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

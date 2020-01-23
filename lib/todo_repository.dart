@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:colors/todo.dart';
+import 'package:todo_list/todo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoRepoFactory {

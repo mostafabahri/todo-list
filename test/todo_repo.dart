@@ -1,5 +1,5 @@
-import 'package:colors/todo.dart';
-import 'package:colors/todo_repository.dart';
+import 'package:todo_list/todo.dart';
+import 'package:todo_list/todo_repository.dart';
 import 'package:test/test.dart';
 
 void main() {
