@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:colors/todo.dart';
 import 'package:flutter/widgets.dart';
+import 'package:colors/todo_repository.dart';
 
 class TodosModel extends ChangeNotifier {
   List<Todo> _todos;
@@ -34,7 +35,13 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  persist() {
-    // TodoRepoFactory.getInstance().saveTodos();
+  @override
+  notifyListeners() {
+    super.notifyListeners();
+    persist(this.todos);
   }
+}
+
+persist(todos) {
+  TodoRepoFactory.getInstance().saveTodos(todos);
 }

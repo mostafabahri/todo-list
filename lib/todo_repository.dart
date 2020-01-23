@@ -4,7 +4,7 @@ import 'package:colors/todo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoRepoFactory {
-  static TodoRepository getInstance() => MemoryTodoRepo();
+  static TodoRepository getInstance() => PrefsTodoRepo();
 }
 
 abstract class TodoRepository {
@@ -26,6 +26,7 @@ class PrefsTodoRepo implements TodoRepository {
     var prefs = await SharedPreferences.getInstance();
 
     var jsonString = jsonEncode(todos);
+
     print(await prefs.setString(kKey, jsonString));
   }
 }
